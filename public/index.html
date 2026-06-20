@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>World Cup 2026 API</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <div class="logo">
+        <span class="trophy">🏆</span>
+        <div>
+          <h1>FIFA World Cup 2026</h1>
+          <p>USA · Canada · Mexico &nbsp;|&nbsp; June 11 – July 19, 2026</p>
+        </div>
+      </div>
+      <div class="header-right">
+        <div id="live-indicator" class="live-dot hidden"><span></span> LIVE</div>
+        <div id="demo-badge" class="demo-badge hidden">DEMO</div>
+      </div>
+    </div>
+  </header>
+
+  <div class="layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <nav class="side-nav">
+        <button class="nav-btn active" data-tab="overview">
+          <span class="nav-icon">📊</span><span>Overview</span>
+        </button>
+        <button class="nav-btn" data-tab="matches">
+          <span class="nav-icon">⚽</span><span>Matches</span>
+        </button>
+        <button class="nav-btn" data-tab="groups">
+          <span class="nav-icon">🏅</span><span>Groups</span>
+        </button>
+        <button class="nav-btn" data-tab="scorers">
+          <span class="nav-icon">🎯</span><span>Top Scorers</span>
+        </button>
+        <button class="nav-btn" data-tab="stats">
+          <span class="nav-icon">📈</span><span>Stats</span>
+        </button>
+        <button class="nav-btn" data-tab="docs">
+          <span class="nav-icon">📖</span><span>API Docs</span>
+        </button>
+      </nav>
+    </aside>
+
+    <!-- Mobile nav -->
+    <nav class="mobile-nav">
+      <button class="nav-btn active" data-tab="overview">Overview</button>
+      <button class="nav-btn" data-tab="matches">Matches</button>
+      <button class="nav-btn" data-tab="groups">Groups</button>
+      <button class="nav-btn" data-tab="scorers">Scorers</button>
+      <button class="nav-btn" data-tab="stats">Stats</button>
+      <button class="nav-btn" data-tab="docs">Docs</button>
+    </nav>
+
+    <main class="content">
+
+      <!-- OVERVIEW TAB -->
+      <section id="tab-overview" class="tab active">
+        <div class="section-title">Tournament Overview</div>
+
+        <div class="stat-cards" id="overview-stats">
+          <div class="stat-card"><div class="stat-icon">⚽</div><div class="stat-val" id="stat-goals">—</div><div class="stat-lbl">Goals Scored</div></div>
+          <div class="stat-card"><div class="stat-icon">🎮</div><div class="stat-val" id="stat-played">—</div><div class="stat-lbl">Matches Played</div></div>
+          <div class="stat-card"><div class="stat-icon">📊</div><div class="stat-val" id="stat-avg">—</div><div class="stat-lbl">Goals / Game</div></div>
+          <div class="stat-card"><div class="stat-icon">🏳️</div><div class="stat-val" id="stat-teams">—</div><div class="stat-lbl">Teams</div></div>
+          <div class="stat-card"><div class="stat-icon">🥅</div><div class="stat-val" id="stat-biggest">—</div><div class="stat-lbl">Biggest Win</div></div>
+          <div class="stat-card"><div class="stat-icon">🟨</div><div class="stat-val" id="stat-draws">—</div><div class="stat-lbl">Draws</div></div>
+        </div>
+
+        <div class="two-col">
+          <div>
+            <div class="section-subtitle">Recent Results</div>
+            <div id="recent-matches" class="mini-list loading">Loading...</div>
+          </div>
+          <div>
+            <div class="section-subtitle">Upcoming Matches</div>
+            <div id="upcoming-matches" class="mini-list loading">Loading...</div>
+          </div>
+        </div>
+
+        <div class="section-subtitle" style="margin-top:1.5rem">Top Scorers Snapshot</div>
+        <div id="overview-scorers" class="loading">Loading...</div>
+      </section>
+
+      <!-- MATCHES TAB -->
+      <section id="tab-matches" class="tab">
+        <div class="section-title">Matches</div>
+        <div class="filters-bar">
+          <select id="stage-filter">
+            <option value="">All Stages</option>
+            <option value="FINAL">Final</option>
+            <option value="THIRD_PLACE">Third Place</option>
+            <option value="SEMI_FINALS">Semi-Finals</option>
+            <option value="QUARTER_FINALS">Quarter-Finals</option>
+            <option value="ROUND_OF_16">Round of 16</option>
+            <option value="GROUP_STAGE">Group Stage</option>
+          </select>
+          <select id="status-filter">
+            <option value="">All Status</option>
+            <option value="FINISHED">Finished</option>
+            <option value="IN_PLAY">Live</option>
+            <option value="SCHEDULED">Upcoming</option>
+          </select>
+          <select id="group-filter">
+            <option value="">All Groups</option>
+            <option value="GROUP_A">Group A</option>
+            <option value="GROUP_B">Group B</option>
+            <option value="GROUP_C">Group C</option>
+            <option value="GROUP_D">Group D</option>
+            <option value="GROUP_E">Group E</option>
+            <option value="GROUP_F">Group F</option>
+            <option value="GROUP_G">Group G</option>
+            <option value="GROUP_H">Group H</option>
+            <option value="GROUP_I">Group I</option>
+            <option value="GROUP_J">Group J</option>
+            <option value="GROUP_K">Group K</option>
+            <option value="GROUP_L">Group L</option>
+          </select>
+          <span id="match-count" class="match-count"></span>
+        </div>
+        <div id="matches-container" class="loading">Loading matches...</div>
+      </section>
+
+      <!-- GROUPS TAB -->
+      <section id="tab-groups" class="tab">
+        <div class="section-title">Group Standings</div>
+        <div id="groups-container" class="loading">Loading groups...</div>
+      </section>
+
+      <!-- TOP SCORERS TAB -->
+      <section id="tab-scorers" class="tab">
+        <div class="section-title">Top Scorers</div>
+        <div id="scorers-container" class="loading">Loading...</div>
+      </section>
+
+      <!-- STATS TAB -->
+      <section id="tab-stats" class="tab">
+        <div class="section-title">Tournament Statistics</div>
+        <div id="stats-container" class="loading">Loading...</div>
+      </section>
+
+      <!-- API DOCS TAB -->
+      <section id="tab-docs" class="tab">
+        <div class="section-title">API Reference</div>
+        <div class="docs-wrapper">
+          <div class="docs-intro">
+            <p>Base URL: <code id="base-url"></code></p>
+            <div class="note">All responses are JSON. Get a free API key at <a href="https://www.football-data.org/client/register" target="_blank">football-data.org</a> and add it to <code>.env</code> for live data.</div>
+          </div>
+          <div class="endpoint-list">
+            <div class="endpoint">
+              <div class="ep-header"><span class="method get">GET</span><code>/api/matches</code></div>
+              <p>All matches. Query: <code>stage</code>, <code>matchday</code></p>
+              <pre>{"matches":[{"id":537327,"stage":"GROUP_STAGE","group":"GROUP_A",
+  "homeTeam":{"name":"Mexico","tla":"MEX"},
+  "awayTeam":{"name":"South Africa","tla":"RSA"},
+  "score":{"winner":"HOME_TEAM","fullTime":{"home":2,"away":0}}}]}</pre>
+            </div>
+            <div class="endpoint">
+              <div class="ep-header"><span class="method get">GET</span><code>/api/matches/:id</code></div>
+              <p>Match detail with goals, yellow/red cards, substitutions.</p>
+              <pre>{"goals":[{"minute":23,"type":"PENALTY","scorer":{"name":"Messi"}}],
+"bookings":[{"minute":64,"card":"YELLOW_CARD","player":{"name":"..."}}]}</pre>
+            </div>
+            <div class="endpoint">
+              <div class="ep-header"><span class="method get">GET</span><code>/api/groups</code></div>
+              <p>All group standings (A–L for 2026).</p>
+            </div>
+            <div class="endpoint">
+              <div class="ep-header"><span class="method get">GET</span><code>/api/groups/:letter</code></div>
+              <p>Single group. Letter = A through L.</p>
+            </div>
+            <div class="endpoint">
+              <div class="ep-header"><span class="method get">GET</span><code>/api/scorers</code></div>
+              <p>Top scorers. Query: <code>limit</code> (max 50).</p>
+            </div>
+            <div class="endpoint">
+              <div class="ep-header"><span class="method get">GET</span><code>/api/teams</code></div>
+              <p>All 48 teams.</p>
+            </div>
+          </div>
+          <div class="stages-ref">
+            <h3>Stage values</h3>
+            <div class="stage-chips">
+              <code>GROUP_STAGE</code><code>ROUND_OF_16</code><code>QUARTER_FINALS</code>
+              <code>SEMI_FINALS</code><code>THIRD_PLACE</code><code>FINAL</code>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- MATCH MODAL -->
+  <div id="modal" class="modal-overlay hidden">
+    <div class="modal-box">
+      <button class="modal-close" id="modal-close">&times;</button>
+      <div id="modal-content"></div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
