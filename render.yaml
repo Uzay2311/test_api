@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: world-cup-api
+    runtime: node
+    buildCommand: npm install
+    startCommand: node server.js
+    envVars:
+      - key: FOOTBALL_API_KEY
+        sync: false
