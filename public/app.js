@@ -59,7 +59,7 @@ document.querySelectorAll('.nav-btn').forEach(btn => {
     const id = btn.dataset.tab;
     document.querySelectorAll('.nav-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === id));
     document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.id === `tab-${id}`));
-    if (id === 'groups' && !loaded.groups) loadGroups();
+    if (id === 'groups') loadGroups();
     if (id === 'scorers' && !loaded.scorers) loadScorers();
     if (id === 'stats' && !loaded.stats) renderStats();
     if (id === 'docs') document.getElementById('base-url').textContent = `${location.origin}/api`;
@@ -93,6 +93,7 @@ document.getElementById('base-url').textContent = `${location.origin}/api`;
     const groupData = await get('/api/groups');
     allGroups = groupData.standings || [];
     loaded.groups = true;
+
 
   } catch (e) {
     console.error('Init error', e);
@@ -300,13 +301,13 @@ function applyFilters() {
 
 // ── Groups ───────────────────────────────────────────────────────────────────
 async function loadGroups() {
-  loaded.groups = true;
   const container = document.getElementById('groups-container');
   try {
     if (!allGroups.length) {
       const data = await get('/api/groups');
       allGroups = data.standings || [];
     }
+    loaded.groups = true;
     container.innerHTML = `<div class="groups-grid">${allGroups.map(groupCard).join('')}</div>`;
   } catch (e) {
     container.innerHTML = `<div class="loading">Error: ${e.message}</div>`;
